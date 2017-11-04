@@ -6,13 +6,12 @@ Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/trusty64"
 
   config.vm.define "ubuntu_mkdev" do |t|
+    t.vm.network "private_network", ip: "192.168.50.4"
   end
 
   config.vm.provider "virtualbox" do |v|
     v.name = "ubuntu_mkdev"
   end
-
-  config.vm.network "private_network", ip: "10.110.0.10"
+  config.vm.provision "file", source: "~/.ssh/mac_ondoc.pub", destination: "~/.ssh/me.pub"
+  config.vm.provision "shell", inline: "cat ~/.ssh/me.pub >> ~vagrant/.ssh/authorized_keys"
 end
-
-
