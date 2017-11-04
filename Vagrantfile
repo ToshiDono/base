@@ -12,6 +12,5 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |v|
     v.name = "ubuntu_mkdev"
   end
-  config.vm.provision "file", source: "~/.ssh/mac_ondoc.pub", destination: "~/.ssh/me.pub"
-  config.vm.provision "shell", inline: "cat ~/.ssh/me.pub >> ~vagrant/.ssh/authorized_keys"
+  config.vm.provision "file", source: "~/.ssh/mac_ondoc.pub", destination: "~vagrant/.ssh/authorized_keys"
 end
