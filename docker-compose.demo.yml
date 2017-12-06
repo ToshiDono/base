@@ -25,7 +25,6 @@ services:
     image: anton1987/migrations_demo
     depends_on:
       - postgres
-    command: ["wait-for-it.sh", "db:5432"]
   patient:
     image: anton1987/patients_demo
     ports:
@@ -34,4 +33,3 @@ services:
       - postgres
       - redis
       - rabbitmq
-    command: ["wait-for-it.sh", "db:5432"]
