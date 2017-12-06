@@ -21,15 +21,17 @@ services:
     ports:
       - "127.0.0.1:15672:15672"
       - "127.0.0.1:5672:5672"
-  web_1:
+  migrations:
     image: anton1987/migrations_demo
     depends_on:
       - postgres
-  web_2:
+    command: ["wait-for-it.sh", "db:5432"]
+  patient:
     image: anton1987/patients_demo
     ports:
       - '127.0.0.1:3000:3000'
     depends_on:
-              - postgres
-              - redis
-              - rabbitmq
+      - postgres
+      - redis
+      - rabbitmq
+    command: ["wait-for-it.sh", "db:5432"]
