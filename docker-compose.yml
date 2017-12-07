@@ -11,9 +11,9 @@ services:
     volumes:
       - ${VOLUMES}:${VOLUMES}
     environment:
-      - POSTGRES_PASSWORD=12345
+      - POSTGRES_PASSWORD=${PGPASSWORD}
       - PGDATA=${ENVPGDATA}
-      - POSTGRES_USER=postgres
+      - POSTGRES_USER=${PGUSER}
   rabbitmq:
     container_name: rabbitmq
     hostname: rabbitmq-container
