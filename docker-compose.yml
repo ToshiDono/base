@@ -9,10 +9,10 @@ services:
     ports:
       - '127.0.0.1:5432:5432'
     volumes:
-      - /Users/anton/pg_data:/Users/anton/pg_data
+      - ${VOLUMES}:${VOLUMES}
     environment:
       - POSTGRES_PASSWORD=12345
-      - PGDATA=/Users/anton/pg_data
+      - PGDATA=${ENVPGDATA}
       - POSTGRES_USER=postgres
   rabbitmq:
     container_name: rabbitmq
