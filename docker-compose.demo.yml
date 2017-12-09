@@ -56,7 +56,6 @@ services:
     ports:
       - '0.0.0.0:5000:5000'
       - '0.0.0.0:9292:9292'
-      - '0.0.0.0:4567:4567'
     environment:
       - DB_HOST=${DB_HOST}
       - DB_REDIS_HOST=${DB_REDIS_HOST}
@@ -69,3 +68,14 @@ services:
       - postgres
       - redis
       - migrations
+  system:
+    image: anton1987/system_demo
+    environment:
+      - DB_HOST=${DB_HOST}
+      - PGUSER=${PGUSER}
+      - PGPASSWORD=${PGPASSWORD}
+      - ENVPOSTGRES_DB=${ENVPOSTGRES_DB}
+      - DB_PG_PORT=${DB_PG_PORT}
+    depends_on:
+      - postgres
+      - rabbitmq
