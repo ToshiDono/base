@@ -35,6 +35,8 @@ services:
       - DB_HOST=${DB_HOST}
       - PGUSER=${PGUSER}
       - PGPASSWORD=${PGPASSWORD}
+      - HUTCH_MQ_HOST=${HUTCH_MQ_HOST}
+      - HUTCH_MQ_API_HOST=${HUTCH_MQ_API_HOST}
     depends_on:
       - postgres
       - redis
@@ -71,11 +73,13 @@ services:
   system:
     image: anton1987/system_demo
     environment:
-      - DB_HOST=${DB_HOST}
       - PGUSER=${PGUSER}
       - PGPASSWORD=${PGPASSWORD}
       - ENVPOSTGRES_DB=${ENVPOSTGRES_DB}
+      - DB_HOST=${DB_HOST}
       - DB_PG_PORT=${DB_PG_PORT}
+      - HUTCH_MQ_HOST=${HUTCH_MQ_HOST}
+      - HUTCH_MQ_API_HOST=${HUTCH_MQ_API_HOST}
     depends_on:
       - postgres
       - rabbitmq
