@@ -30,8 +30,14 @@ Example environment variables:
 PGUSER=postgres
 PGPASSWORD=12345
 ENVPOSTGRES_DB=mkdev_dev
-VOLUMES=/Users/user_name/pg_data
+```
+for running `docker-compose.yml` use 
+```
 ENVPGDATA=/Users/user_name/pg_data
+VOLUMES=/Users/user_name/pg_data
+```
+and set this environment variables if you run `docker-compose.demo.yml`:
+```
 DB_HOST=postgres
 DB_PG_PORT=5432
 DB_REDIS_HOST=redis
