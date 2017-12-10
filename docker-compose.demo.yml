@@ -1,0 +1,85 @@
+version: '3'
+services:
+  redis:
+    image: redis
+    ports:
+      - '127.0.0.1:6379:6379'
+  postgres:
+    image: postgres:9.5
+    ports:
+      - '127.0.0.1:5432:5432'
+    environment:
+      - POSTGRES_DB=${ENVPOSTGRES_DB}
+      - POSTGRES_PASSWORD=${PGPASSWORD}
+      - POSTGRES_USER=${PGUSER}
+  rabbitmq:
+    container_name: rabbitmq
+    hostname: rabbitmq-container
+    image: rabbitmq:3.6.2-management
+    ports:
+      - "127.0.0.1:15672:15672"
+      - "127.0.0.1:5672:5672"
+  migrations:
+    image: anton1987/migrations_demo
+    environment:
+      - DB_HOST=${DB_HOST}
+      - PGUSER=${PGUSER}
+      - PGPASSWORD=${PGPASSWORD}
+    depends_on:
+      - postgres
+  patient:
+    image: anton1987/patients_demo
+    ports:
+      - '0.0.0.0:3000:3000'
+    environment:
+      - DB_HOST=${DB_HOST}
+      - PGUSER=${PGUSER}
+      - PGPASSWORD=${PGPASSWORD}
+      - HUTCH_MQ_HOST=${HUTCH_MQ_HOST}
+      - HUTCH_MQ_API_HOST=${HUTCH_MQ_API_HOST}
+    depends_on:
+      - postgres
+      - redis
+      - rabbitmq
+      - migrations
+  manager:
+    image: anton1987/manager_demo
+    ports:
+      - '0.0.0.0:4000:4000'
+    environment:
+      - DB_HOST=${DB_HOST}
+      - PGUSER=${PGUSER}
+      - PGPASSWORD=${PGPASSWORD}
+    depends_on:
+      - postgres
+      - migrations
+  history:
+    image: anton1987/history_service_demo
+    ports:
+      - '0.0.0.0:5000:5000'
+      - '0.0.0.0:9292:9292'
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_REDIS_HOST=${DB_REDIS_HOST}
+      - PGUSER=${PGUSER}
+      - PGPASSWORD=${PGPASSWORD}
+      - DB_REDIS_PORT=${DB_REDIS_PORT}
+      - DB_PG_PORT=${DB_PG_PORT}
+      - ENVPOSTGRES_DB=${ENVPOSTGRES_DB}
+    depends_on:
+      - postgres
+      - redis
+      - migrations
+  system:
+    image: anton1987/system_demo
+    environment:
+      - PGUSER=${PGUSER}
+      - PGPASSWORD=${PGPASSWORD}
+      - ENVPOSTGRES_DB=${ENVPOSTGRES_DB}
+      - DB_HOST=${DB_HOST}
+      - DB_PG_PORT=${DB_PG_PORT}
+      - HUTCH_MQ_HOST=${HUTCH_MQ_HOST}
+      - HUTCH_MQ_API_HOST=${HUTCH_MQ_API_HOST}
+    depends_on:
+      - postgres
+      - rabbitmq
